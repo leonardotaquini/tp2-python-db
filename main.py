@@ -86,12 +86,21 @@ carpeta_provincia = 'provincias'
 if not os.path.exists(carpeta_provincia):
     os.makedirs(carpeta_provincia)
 
+# def escribir_csv_provincia(provincia, localidades):
+#     nombre_archivo = os.path.join(carpeta_provincia, f'{provincia}.csv')
+#     with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo_csv:
+#         escritor_csv = csv.writer(archivo_csv)
+#         escritor_csv.writerow(['Localidades'])
+#         print(localidades)
+#         escritor_csv.writerows(localidades)
+
 def escribir_csv_provincia(provincia, localidades):
     nombre_archivo = os.path.join(carpeta_provincia, f'{provincia}.csv')
     with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo_csv:
         escritor_csv = csv.writer(archivo_csv)
-        escritor_csv.writerow(['Localidades de', provincia])
-        escritor_csv.writerows(localidades)
+        escritor_csv.writerow(['Localidades'])
+        for localidad in localidades:
+            escritor_csv.writerow([localidad])
 
 host = os.environ["DB_HOST"]
 user = os.environ["DB_USERNAME"] 
@@ -118,7 +127,8 @@ provincias = agrupar_provincia_localidad(localidades)
 
 
 for provincia, localidades in provincias.items():
-    escribir_csv_provincia(provincia, localidades)
+    localidadess = list(localidades)
+    escribir_csv_provincia(provincia, localidadess)
 
 
 conn.commit()
